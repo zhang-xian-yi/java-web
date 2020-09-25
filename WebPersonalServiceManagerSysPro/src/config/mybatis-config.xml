@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+	 PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	 "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!--防止解析异常 -->
+	<typeAliases>
+     <package name="org.by4g.mybatis.vo" />
+    </typeAliases>
+    
+	<environments default="mysql">
+		<environment id="mysql">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+				<property name="url" value="jdbc:mysql://localhost:3306/equipment_manager_system?useAffectedRows=true&amp;useSSL=false&amp;serverTimezone=UTC"/>
+				<property name="username" value="root"/>
+				<property name="password" value="123456"/>
+			</dataSource>
+		</environment>
+		
+		
+	</environments>
+	<mappers>
+		 <!-- 批量加载mapper
+         指定mapper接口的包名，mybatis自动扫描包下边所有mapper接口进行加载
+         遵循一些规范：需要将mapper接口类名和mapper.xml映射文件名称保持一致，且在一个目录 中
+         上边规范的前提是：使用的是mapper代理方法
+          -->
+         <package name="cn.tianfu.EuqipManageSystem.dao.mybatis.dao"/>
+	</mappers>
+</configuration>

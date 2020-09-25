@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.3.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd 
+		http://www.springframework.org/schema/aop 
+	    http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.3.xsd"> 
+	
+	<!-- 扫描包路径-->
+	<context:component-scan base-package="cn.tianfu.EuqipManageSystem.web.control" />
+	<mvc:annotation-driven ></mvc:annotation-driven>
+	<mvc:default-servlet-handler />
+	
+	<!-- 指定需要扫描的 包 使得注解生效 -->
+	<context:component-scan base-package="cn.tianfu.EuqipManageSystem.web.aspect" />
+	<context:component-scan base-package="cn.tianfu.EuqipManageSystem.service.aspect" />
+	<!-- 启动关于 aspectj 的注解支持 -->
+	<aop:aspectj-autoproxy proxy-target-class="true"/>	
+	<!-- 定义视图解析器-->
+	<bean id="viewResolvet" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/"></property>	
+		<property name="suffix" value=".html"></property>
+	</bean>
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="cn.tianfu.EuqipManageSystem.web.filter.URLInterceptttor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+</beans>

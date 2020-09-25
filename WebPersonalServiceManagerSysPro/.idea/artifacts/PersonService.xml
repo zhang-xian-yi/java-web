@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="PersonService">
+    <output-path>$PROJECT_DIR$/out/artifacts/PersonService</output-path>
+    <root id="archive" name="PersonService.war">
+      <element id="artifact" artifact-name="WebPersonalServiceManagerSysPro:war exploded" />
+    </root>
+  </artifact>
+</component>
