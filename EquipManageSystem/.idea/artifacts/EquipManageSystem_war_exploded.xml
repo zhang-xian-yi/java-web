@@ -1,0 +1,39 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="EquipManageSystem:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/EquipManageSystem_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="EquipManageSystem" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="module" name="commons-logging-1.2.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="spring-aop-4.3.6.RELEASE.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="spring-beans-4.3.6.RELEASE.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="spring-context-4.3.6.RELEASE.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="spring-core-4.3.6.RELEASE.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="spring-expression-4.3.6.RELEASE.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="spring-web-4.3.6.RELEASE.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="spring-webmvc-4.3.6.RELEASE.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="aspectjweaver-1.8.10.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="commons-io-2.2.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="commons-lang-2.6.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="ezmorph-1.0.6.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="json-lib-2.4-jdk15.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="mybatis-3.4.2.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="mysql-connector-java-8.0.11.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="ValidateCode.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="commons-beanutils-1.8.3.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="commons-collections-3.2.1.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="commons-dbutils-1.4.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="commons-fileupload-1.2.2.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="spring-aspects-4.3.6.RELEASE.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="log4j-core-2.10.0.jar" module-name="EquipManageSystem" />
+          <element id="library" level="module" name="log4j-api-2.10.0.jar" module-name="EquipManageSystem" />
+          <element id="library" level="project" name="aspectjweaver-1.8.10" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="EquipManageSystem/web/Web" />
+    </root>
+  </artifact>
+</component>

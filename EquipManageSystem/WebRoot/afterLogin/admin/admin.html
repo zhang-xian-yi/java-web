@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Stict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-
+strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang = "zh-CN">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link href="/EquipManageSystem/afterlogin/admin/css/style.css" rel="stylesheet" type="text/css" />
+<link href="/EquipManageSystem/afterlogin/admin/css/pageBean.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/utils.js"></script>
+<script type="text/javascript" src="./js/page.js"></script>
+<script language="javascript" src="./js/public.js"></script>
+<script type="text/javascript">
+	function addproduct() 
+	{
+		window.location.href = "/EquipManageSystem/afterLogin/addEquipment.html";
+	}
+	
+	$(document).ready(function(){  
+     	load_flush();
+	}); 
+	//更新成功之后的 刷新 由于 改用ajax 出现的设计问题
+	function load_flush()
+	{
+		//只能传一个参数
+		var loc=location.href;
+		var url_length = loc.length;//地址的总长度
+		var eq_index =loc.indexOf("=");//取得=号的位置
+		var msg=decodeURI(loc.substr(eq_index+1, url_length-eq_index));//从=号后面的内容
+		//信号1 定义为刷新 页面
+		if(msg == 1)
+		{
+			AJAXsend_data_flush();
+		}
+	}
+</script>
+</head>
+<body>
+	<br>
+	<form id="SerachForm" name="SerachForm"
+		action="/EquipManageSystem/equipControl/getAllEquipsWithCommand"
+		method="post">
+		<table cellspacing="1" cellpadding="0" width="100%" align="center"
+			bgcolor="#f5fafe" border="0">
+			<tbody>
+				<tr>
+					<td class="ta_01" align="center" bgcolor="#afd1f3"><strong>查询 条 件</strong></td>
+				</tr>
+				<tr>
+					<td>
+						<table cellpadding="0" cellspacing="0" border="0" width="100%">
+							<tr>
+								<td height="22" align="center" bgcolor="#f5fafe" class="ta_01">
+									设备名字：</td>
+								<td class="ta_01" bgcolor="#ffffff">
+									<input type="text" name="name" id="equip_name" onkeyup="AJAX_sendData()" class="bg" size="15" placeholder="请输入设备名字" /></td>
+								<td height="22" align="center" bgcolor="#f5fafe" class="ta_01">
+									设备状态：</td>
+								<td class="ta_01" bgcolor="#ffffff">
+									<select name="status" id="status" onchange="AJAX_sendData()">
+										<option value="" selected="selected">--选择设备状态--</option>
+										<option value="working">wroking</option>
+										<option value="end">end</option>
+										<option value="broken">broken</option>
+										<!--  此选项 设置为空  保证 其被选择的时候 值为空 -->
+										<option value="">no</option>
+									</select>
+								</td>
+							</tr>
+
+							<tr>
+								<td height="22" align="center" bgcolor="#f5fafe" class="ta_01">
+									登录时间：</td>
+								<td class="ta_01" bgcolor="#ffffff">
+									<input type="text" onkeyup="AJAX_sendData()" id="login_time" name="login_time" class="bg" size="15" placeholder="请输入设备登录时间" />
+								</td>
+								<td height="22" align="center" bgcolor="#f5fafe" class="ta_01">
+									登出时间：</td>
+								<td class="ta_01" bgcolor="#ffffff">
+									<input type="text" onkeyup="AJAX_sendData()" name="logout_time" id="logout_time" class="bg" size="15" placeholder="请输入设备登出时间" />
+								</td>
+							</tr>
+							<tr></tr>
+							<tr>
+								<td width="100" height="22" align="center" bgcolor="#f5fafe"
+									class="ta_01"></td>
+								<td class="ta_01" bgcolor="#ffffff"><font face="宋体"
+									color="red"> &nbsp;</font></td>
+								<td align="right" bgcolor="#ffffff" class="ta_01"><br>
+									<br></td>
+									
+								<td align="right" bgcolor="#ffffff" class="ta_01">
+									<input type="button" id="searchAll_btn" value="查询所有" class="button_view">
+										<!-- &#26597;&#35810; -->
+									 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									 <input type="reset" name="reset" value="&#37325;&#32622;" class="button_view" />
+								</td>
+							</tr>
+							
+							<tr>
+								<td>页面大小</td>
+								<td>
+									<select id="page_size">
+										<option value="5" selected="selected">5</option>
+										<option value="10">10</option>
+										<option value="3">3</option>
+										<option value="1">1</option>
+									</select>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td class="ta_01" align="center" bgcolor="#afd1f3"><strong>设备列表</strong>
+					</td>
+				</tr>
+				<tr>
+					<td class="ta_01" align="right">
+						<button type="button" id="add" name="add" value="&#28155;&#21152;"
+							class="button_add" onclick="addproduct()">&#28155;&#21152;
+						</button>
+					</td>
+				</tr>
+				<tr>
+					<td class="ta_01" align="center" bgcolor="#f5fafe">
+						<table  cellspacing="0" cellpadding="1" rules="all"
+							bordercolor="gray" border="1" id="datagrid1"
+							style="border-right: gray 1px solid; border-top: gray 1px solid; border-left: gray 1px solid; width: 100%; word-break: break-all; border-bottom: gray 1px solid; border-collapse: collapse; background-color: #f5fafe; word-wrap: break-word">
+							<tr
+								style="font-weight: bold; font-size: 12pt; height: 25px; background-color: #afd1f3">
+								<td align="center" width="12%">设备名字</td>
+								<td align="center" width="13%">设备登录时间</td>
+								<td align="center" width="13%">设备登出时间</td>
+								<td align="center" width="12%">设备状态</td>
+								<td width="17%" align="center">设备相关文件</td>
+								<td width="8%" align="center">编辑</td>
+								<td width="8%" align="center">删除</td>
+							</tr>
+						</table>
+						<table id="equip_list">
+								<tr>
+									<td>暂无数据</td>
+								</tr>
+						</table>
+						
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+	<p></p>
+	<p></p>
+	<p></p>
+	<div align="right">
+		<div align="right">
+			<div class="pagination" align="right">
+				<ul style="list-style-type: none">
+					<li class="disablepage"><a href="javascript:AJAXpage_front_request()">&lt;&lt;上一页</a></li>
+					<li>第<span id="page_curr">1</span>页/共<span id="page_num">1</span>页</li>
+					<li class="nextPage"><a href="javascript:AJAXpage_next_request()">&gt;&gt;下一页</a></li>
+				</ul>
+			</div>								
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="./js/page.js"></script>
+<script>
+//按键 和下拉框选择 都会触发此机制
+function AJAX_sendData()
+{
+	//如果 设备状态 不限制 那么 取消 value 直接让选择器 获取不到那个值 确保其为空
+	var data = {
+	"e_name":$("#equip_name").val(),
+	"e_status":$("#status option:selected").val(),
+	"e_login_time":$("#login_time").val(),
+	"e_logout_time": $("#logout_time").val(),  
+	"page_curr":$("#page_curr").text(),
+	"page_num":$("#page_num").text(),
+	"page_size":$("#page_size option:selected").val()};
+	
+	//console.log("name:"+data.e_name+"data: "+data.page_size+" curr: "+data.page_curr);
+	let targetURL = $("#SerachForm").attr("action");
+	$.ajax({
+		type:"GET",
+		url:targetURL,
+		cache:false,
+		dataType : "json",
+		data:data,
+		success:function(data){ 
+ 			handleSuccData(data);
+ 		},
+ 		error:function(data){ 
+ 			handleErrorData(data);
+ 		}
+	});
+}
+	
+	
+$("#searchAll_btn").click(function(){
+	//alert("chaxun");
+	AJAXsend_data_flush();
+})
+
+
+function AJAXpage_front_request()
+{
+	var targetURL = "/EquipManageSystem/equipControl/getAllEquipments";
+	let page_curr = $("#page_curr").text();
+	let page_size = $("#page_size option:selected").val();
+	let page_num = $("#page_num").text();
+	
+	//合法性 数据检查
+	if(! check_page_info(page_curr,page_size,page_num))
+	{
+		return;
+	}
+	
+	//如果数据 正常 那么 向前翻页 应该是 - 1
+	var data = {
+		"e_name":$("#equip_name").val(),
+		"e_status":$("#status option:selected").val(),
+		"page_curr":(parseInt(page_curr) - 1),
+		"page_size":page_size,
+		"page_num":page_num};
+	//发送数据
+	AJAX_change_page(targetURL,data);
+}
+
+
+function AJAXpage_next_request()
+{
+	var targetURL = "/EquipManageSystem/equipControl/getAllEquipments";
+	let page_curr = $("#page_curr").text();
+	let page_size = $("#page_size option:selected").val();
+	let page_num = $("#page_num").text();
+	
+	//数据合法性质检查
+	if(! check_page_info(page_curr,page_size,page_num))
+	{
+		return;
+	}
+	
+	//如果数据 正常 那么 向后翻页 应该是 + 1
+	var data = {
+		"e_name":$("#equip_name").val(),
+		"e_status":$("#status option:selected").val(),
+		"page_curr":(parseInt(page_curr) + 1),
+		"page_size":page_size,
+		"page_num":page_num};
+	//console.log("next change data: "+data);	
+	AJAX_change_page(targetURL,data);
+}
+
+</script>
+</html>
+

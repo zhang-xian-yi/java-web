@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>设备管理系统</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+
+<link rel="stylesheet" href="/EquipManageSystem/css/main.css" type="text/css" />
+<script type="text/javascript" src="/EquipManageSystem/js/utils.js"></script>
+<script type="text/javascript" src="/EquipManageSystem/js/jquery.min.js"></script>
+<script type="text/javascript">
+	function changeImage() 
+	{
+		document.getElementById("img").src = "/EquipManageSystem/func/getCaptcha?time="+ new Date().getTime();
+		console.log("xxxx");
+	}
+</script>
+</head>
+
+<body class="main">
+
+	<div id="head_div">
+		<iframe src="/EquipManageSystem/htmlComponent/head.html " scrolling="no"
+		frameborder = "0"
+		width=100%
+		height="20%"></iframe>
+	</div>
+	<div id="divcontent" height="60%" width=100%>
+		<form action="./userControl/login" method="GET" id="login_form">
+			<table width="900px" border="0" cellspacing="0">
+				<tr>
+					<td style="padding:30px"><div style="height:470px">
+							<b>&nbsp;&nbsp;首页&nbsp;&raquo;&nbsp;个人用户登录</b>
+							<div>
+								<table width="100%" border="0" cellspacing="0">
+									<tr>
+										<td>
+											<div id="logindiv">
+												<table width="95%" border="0" cellspacing="0">
+													<tr>
+														<td style="text-align:center; padding-top:20px"><img
+															src="/EquipManageSystem/images/logintitle.gif" width="150" height="30" />
+														</td>
+													</tr>
+													<tr>
+														<td style="text-align:center;padding-top:20px;">
+															<span id="login_message"  color="red"></span>
+														</td>
+													</tr>
+													<tr>
+														<td style="text-align:center">
+															<table width="80%" border="0" cellspacing="0"
+																style="margin-top:15px ;margin-left:auto; margin-right:auto">
+																<tr>
+																	<td
+																		style="text-align:right; padding-top:5px; width:25%">用户名：</td>
+																	<td style="text-align:left">
+																	<input name="post_box" type="text" class="textinput" placeholder="请输入注册邮箱" />
+																	</td>
+																	<td>
+																		<span colspan="4" id="errorPost_box"></span>
+																	</td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																</tr>
+																<tr>
+																	<td style="text-align:right; padding-top:5px">密&nbsp;&nbsp;&nbsp;&nbsp;码：</td>
+																	<td style="text-align:left">
+																	<input name="password" type="password" class="textinput" />
+																	</td>
+																	<td>
+																		<span id="errorPass"></span>
+																	</td>
+																</tr>
+																<tr>
+																	<td colspan="2" style="text-align:center">
+																	<input  type="checkbox" name="checkbox" value="checkbox" />
+																			记住用户名&nbsp;&nbsp; <input type="checkbox"
+																			name="checkbox" value="checkbox" /> 自动登录</td>
+																</tr>
+																<!-- 注册码 -->	
+																<tr>
+																	<td style="text-align:right; width:25%">输入校验码：</td>
+																	<td style="width:50%"><input type="text" class="textinput" name="imageCode"/>
+																	</td>
+																	<td>&nbsp;<span colspan="4" color="red" id="errorCaptcha"></span></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	
+																</tr>
+																<tr>
+																	<td style="text-align:right;width:20%;">&nbsp;</td>
+																	<td colspan="2" style="width:50%">
+																	<img src="/EquipManageSystem/func/getCaptcha" width="180"
+																		 height="30" class="textinput" style="height:30px;" id="img" />&nbsp;&nbsp;
+																		<a href="javascript:void(0);" onclick="changeImage()">看不清换一张</a>
+																	</td>
+																</tr>
+																<!-- 注册码 ********************************-->		
+																<tr>
+																	<td colspan="2"
+																		style="padding-top:10px; text-align:center">
+																		<input	name="image" type="button" onclick="submit_ajax()"
+																				value="登录" width="166" height="22" />
+																	</td>
+																</tr>
+
+																<tr>
+																	<td colspan="2" style="padding-top:10px"><img
+																		src="/EquipManageSystem/images/loginline.gif" width="241" height="10" />
+																	</td>
+																</tr>
+																<tr>
+																	<td colspan="2"
+																		style="padding-top:10px; text-align:center"><a
+																		href="register.html"><img name="image"
+																			src="/EquipManageSystem/images/signupbutton.gif" width="135" height="33" />
+																	</a></td>
+																</tr>
+															</table>
+														</td>
+													</tr>
+												</table>
+											</div></td>
+										<td style="text-align:left; padding-top:10px; width:30%"><h1>您还没有注册？</h1>
+											<p>注册新会员，看到不一样的世界!</p>
+											<p>更详细的设备信息，注册即享受丰富折扣和优惠。</p>
+											<p style="text-align:right">
+												<a href="register.html"><img
+													src="/EquipManageSystem/images/signupbutton.gif" width="135" height="33" /> </a>
+											</p>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
+	<div id="foot_div">
+		<iframe src="/EquipManageSystem/htmlComponent/foot.html "
+		scrolling="no"
+		frameborder = "0"
+		width=100%
+		height="20%"></iframe>
+	</div>
+</body>
+
+<script type="text/javascript">
+function submit_ajax()
+{
+	//获取请求路径
+	var targetUrl = $("#login_form").attr("action");
+	//alert(targetUrl); 
+	//数据序列化 
+	var data = $("#login_form").serialize();
+	//alert("data: "+data);
+	$.ajax({
+		type:"GET",
+		url:targetUrl,
+		cache:false,
+		async : false, 
+		dataType : "json",
+		data:data,
+		success:function(data){ 
+ 			handleLoginSuccData(data);
+ 		},
+ 		error:function(data){ 
+ 			handleLoginErrorData(data);
+ 		}
+	});
+	//刷新验证码
+	changeImage();
+}
+
+
+function handleLoginSuccData(data) 
+{
+	//alert('success');
+	var jsondataStr = JSON.stringify(data);
+	var MapData = $.parseJSON(jsondataStr);
+	console.log(MapData);
+	//获取返回的json 对象
+	var user_name = MapData.data.user_name;
+	//10 means return code login succ
+	if(MapData.code == 10)
+	{
+		window.location.href = "./afterLogin/index.html?user_name="+user_name;
+	}
+	window.location.href = "./afterLogin/index.html?user_name="+user_name;
+}
+
+function handleLoginErrorData(data) 
+{
+	//console.log("in error handle function");
+	var jsondataStr = JSON.stringify(data);
+	var items = $.parseJSON(jsondataStr);
+	console.log("response json: "+items.responseJSON.data);
+	$("login_message").innerHTML =items.responseJSON.msg;
+	//获取返回的json 对象
+	var MapData = items.responseJSON.data;
+	console.log(MapData);
+	
+	
+	if(MapData.errorPost_box != null)
+	{
+		var temp = "<font color='red'>"+MapData.errorPost_box+"</font>";
+		var errorText = document.getElementById("errorPost_box");
+		errorText.innerHTML = temp;
+	}
+	else
+	{
+		var errorText = document.getElementById("errorPost_box");
+		errorText.innerHTML = "     ";
+	}
+	// 和上面相似 
+	showErrorText(MapData.errorPass, "errorPass");
+	showErrorText(MapData.errorCaptcha, "errorCaptcha");
+	
+}
+</script>
+
+</html>

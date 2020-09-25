@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tianfu.EuqipManageSystem.dao.mybatis.dao.EquipmentMapper">
+	<resultMap id="ResultMap" type="cn.tianfu.EuqipManageSystem.entity.pojo.Equipment" >
+	    <id column="name" property="name"  					   javaType="String" jdbcType="VARCHAR" />
+	    <result column="login_time" 	property="login_time"  javaType="java.util.Date" jdbcType="TIMESTAMP" />
+	    <result column="logout_time"	property="logout_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+	    <result column="state" 			property="state"       javaType="String" jdbcType="VARCHAR"/>
+	    <result column="file_path" 	property="file_path"  javaType="String" jdbcType="VARCHAR"	/>
+	    <result column="category" 		property="category"    javaType="String" jdbcType="VARCHAR"/>
+	</resultMap>
+	<!--根据设备编号获取设备信息 -->
+	<select id="find" parameterType="cn.tianfu.EuqipManageSystem.entity.pojo.Equipment"
+		resultType="cn.tianfu.EuqipManageSystem.entity.pojo.Equipment">
+		select * from equipment_t where name = #{name}
+	</select>
+	<!-- 获取表中 限制条件的 数据记录  -->
+	<select id="findAll" resultMap="ResultMap" parameterType="cn.tianfu.EuqipManageSystem.entity.bean.PageInfo">
+		select * from equipment_t limit #{obj_cursor_start},#{page_size}
+	</select>
+	<!-- 获取表中 限制条件的 数据记录  -->
+	<select id="findAllByCommand" resultMap="ResultMap" parameterType="cn.tianfu.EuqipManageSystem.entity.bean.AsyncRefreshRequest">
+		select * from equipment_t where 1=1
+		<if test="e_name != '' and e_name != null">
+			and name like concat('%',#{e_name},'%')
+		</if>
+		<if test="e_status != '' and e_status != null">
+			and state like concat('%',#{e_status},'%')
+		</if>
+		<if test="e_login_time != '' and e_login_time != null">
+			and login_time like concat('%',#{e_login_time},'%')
+		</if>
+		<if test="e_logout_time != '' and e_logout_time != null">
+			and logout_time like concat('%',#{e_logout_time},'%')
+		</if>
+		limit #{page_info.obj_cursor_start},#{page_info.page_size}
+	</select>
+	<!-- 获取表中 满足要求的记录 的总数 -->
+	<select id="getCountByCommand" resultType="Integer" parameterType="cn.tianfu.EuqipManageSystem.entity.bean.AsyncRefreshRequest">
+		select count(*) from equipment_t where 1=1
+		<if test="e_name != '' and e_name != null">
+			and name like concat('%',#{e_name},'%')
+		</if>
+		<if test="e_status != '' and e_status != null">
+			and state like concat('%',#{e_status},'%')
+		</if>
+		<if test="e_login_time != '' and e_login_time != null">
+			and login_time like concat('%',#{e_login_time},'%')
+		</if>
+		<if test="e_logout_time != '' and e_logout_time != null">
+			and logout_time like concat('%',#{e_logout_time},'%')
+		</if>
+	</select>
+	<!-- 获取标中记录 的总数 -->
+	<select id="getCount" resultType="Integer" >
+		select count(*) from equipment_t 
+	</select>
+	<!--添加数据 -->
+	<insert id="add" parameterType="cn.tianfu.EuqipManageSystem.entity.pojo.Equipment" >
+		insert into equipment_t  (name,login_time,logout_time,state,file_path) 
+					values(#{name},#{login_time},#{logout_time},#{state},#{file_path}) 
+	</insert>
+	<!-- 更新数据 -->
+	<!-- 设置语句之后 记得打逗号 语法错误 -->
+	<update id="update" parameterType="cn.tianfu.EuqipManageSystem.entity.pojo.Equipment">
+		update equipment_t 
+		<set>
+			<!-- 日期类型 不能与 String 类型进行判断 Date != ""  写法会导致异常-->
+			<if test="login_time !=null ">
+				login_time = #{login_time},
+			</if>
+			<if test="logout_time !=null ">
+				logout_time = #{logout_time},
+			</if>
+			<if test="state !=null and state!='' ">
+				state = #{state},
+			</if>
+			<if test="category !=null and category!=''">
+				category = #{category},
+			</if>
+			<if test="file_path !=null and file_path!=''">
+				file_path = #{file_path},
+			</if>
+		</set>
+		where name=#{name}
+	</update>
+	<!-- 删除数据 -->
+	<delete id="delete" parameterType="cn.tianfu.EuqipManageSystem.entity.pojo.Equipment" >
+			delete from equipment_t where name=#{name} 
+	</delete>
+</mapper>

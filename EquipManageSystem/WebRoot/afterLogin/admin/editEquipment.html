@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/tr/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang = "zh-CN">
+<head>
+<meta http-equiv="content-language" content="zh-cn">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link href="/EquipManageSystem/afterlogin/css/style.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="../../js/jquery.min.js"></script>
+<script language="javascript" type="text/javascript">
+	//页面 一 加载  就执行
+	$(document).ready(function(){  
+     load_edit_name();
+	}); 
+	
+	function load_edit_name()
+	{
+		//只能传一个参数
+		var loc = location.href;
+		var params_index=loc.indexOf("?");//取得=号的位置
+		//如果没有 则返回整个字符串
+		var params = loc.split("&");
+		for(var i = 0;i<params.length;++i)
+		{
+			var eq_index = params[i].indexOf("=");
+			var edit_name=decodeURI(params[i].substr(eq_index+1));//从=号后面的内容
+			if(0 == i)
+			{
+				console.log("edit_name: "+edit_name);
+				$("#edit_name").html(edit_name);
+			}
+		}
+	}
+</script>
+</head>
+<body>
+	<form 	id="edit_equipment_update" name="Form1"
+			action="/EquipManageSystem/equipControl/updateEquipment" 
+			enctype="multipart/form-data"
+			method="POST"
+			>
+		&nbsp;
+		<table cellspacing="1" cellpadding="5" width="100%" align="center"
+			bgcolor="#eeeeee" style="border: 1px solid #8ba7e3" border="0">
+			<tr>
+				<td class="ta_01" align="center" bgcolor="#afd1f3" colspan="4"
+					height="26"><strong><strong>更新设备信息</strong> </strong>
+				</td>
+			</tr>
+
+
+			<tr>
+				<td align="center" bgcolor="#f5fafe" class="ta_01">设备名称：</td>
+				<td class="ta_01" bgcolor="#ffffff">
+					<span id="edit_name">
+						
+					</span>
+				</td>
+				<td align="center" bgcolor="#f5fafe" class="ta_01">设备状态：</td>
+				<td class="ta_01" bgcolor="#ffffff">
+					<select name="state" id="state">
+							<option value="" selected="selected">--选择设备状态--</option>
+							<option value="working">wroking</option>
+							<option value="ended">end</option>
+							<option value="broken">broken</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td align="center" bgcolor="#f5fafe" class="ta_01">设备数量：</td>
+				<td class="ta_01" bgcolor="#ffffff"><input type="text"
+					name="equipment_num" 
+					class="bg" />
+				</td>
+				<td align="center" bgcolor="#f5fafe" class="ta_01">设备类别：</td>
+				<td class="ta_01" bgcolor="#ffffff">
+					<select  id="category">
+							<option value="" selected="selected">--选择设备类别--</option>
+							<option value="嵌入式设备">嵌入式设备</option>
+							<option value="计算机外设">计算机外设</option>
+							<option value="移动设备">移动设备</option>
+							<option value="服务设备">服务设备</option>
+							<option value="其他">其他</option>
+					</select>
+				</td>
+			</tr>
+
+
+			<tr>
+				<td align="center" bgcolor="#f5fafe" class="ta_01">设备图片：</td>
+				<td class="ta_01" bgcolor="#ffffff" colspan="3">
+				<input
+					type="file" id="upload" size="30" value=""/>
+				</td>
+			</tr>
+			<tr>
+				<td class="ta_01" align="center" bgcolor="#f5fafe">设备描述：</td>
+				<td class="ta_01" bgcolor="#ffffff" colspan="3">
+				<textarea name="description" cols="30" rows="3"  style="width: 96%"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td align="center" colspan="4" class="sep1">
+				<img src="/EquipManageSystem/afterlogin/images/shim.gif">
+				</td>
+			</tr>
+			<tr>
+				<td class="ta_01" style="width: 100%" align="center"
+					bgcolor="#f5fafe" colspan="4">
+					<input type="button" onclick="ajax_submit()" class="button_ok" value="确定" >	
+					<font face="宋体">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
+					<input type="reset" value="重置" class="button_cancel">
+					<font face="宋体">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font> <input
+					class="button_ok" type="button" onclick="history.go(-1)" value="返回" />
+					<span id="label1">
+					</span>
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+
+<script type="text/javascript">
+function ajax_submit()
+{
+	//获取请求路径
+	//通过 URL 请求 名字
+	var targetUrl = $("#edit_equipment_update").attr("action")+"?name="+$("#edit_name").text();
+	var data = new FormData();
+   	//FormData对象加入参数
+    //'file' 为参数名，$('#file')[0].files[0])获取上传的文
+    data.append("state",$("#state option:selected").val());
+    data.append("category", $("#category option:selected").val());
+    data.append('file', $('#upload')[0].files[0]);
+   	// console.log("data   "+data);
+	$.ajax({
+		type:"PUT",
+		url:targetUrl, 
+	    cache: false,    //上传文件不需缓存
+     	processData: false, 
+     	contentType: false,
+		data:data,
+		dataType:'json',
+		success:function(data){ 
+ 			handleEditSuccData(data);
+ 		},
+ 		error:function(data){ 
+ 			handleEditErrorData(data);
+ 		}
+	});
+	
+}
+
+function handleEditSuccData(data)
+{
+	//定义信号 1 为 重新刷新页面
+	//console.log("update succ: ");
+	window.location.href = "./admin.html?signal=1";
+}
+
+function handleEditErrorData(data)
+{
+	console.log("未知错误 编辑失败");
+}
+</script>
+
+</html>

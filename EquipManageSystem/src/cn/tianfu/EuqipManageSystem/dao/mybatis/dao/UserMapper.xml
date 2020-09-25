@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tianfu.EuqipManageSystem.dao.mybatis.dao.UserMapper">
+	
+	<!--根据用户邮箱获取客户信息 -->
+	<select id="find" parameterType="cn.tianfu.EuqipManageSystem.entity.pojo.User"
+		resultType="cn.tianfu.EuqipManageSystem.entity.pojo.User">
+		select * from user_t where post_box = #{post_box}
+	</select>
+	
+	<!--添加数据 -->
+	<insert id="add"  parameterType="cn.tianfu.EuqipManageSystem.entity.pojo.User" >
+		insert into 									
+		user_t (post_box,user_name,password,sex,telephone,authority) 
+		values (#{post_box},#{user_name},#{password},#{sex},#{telephone},#{authority}) 
+	</insert>
+	
+	<!-- 更新数据 -->
+	<update id="update" parameterType="cn.tianfu.EuqipManageSystem.entity.pojo.User" >
+		update user_t 
+		<set>
+			<if test="user_name !=null and user_name !=''">
+				user_name = #{user_name},
+			</if>
+			<if test="password !=null and password !=''">
+				password = #{password},
+			</if>
+			<if test="sex !=null and sex !=''">
+				sex = #{sex},
+			</if>
+			<if test="telephone !=null and telephone !=''">
+				telephone = #{telephone},
+			</if>
+			<if test="introduce_self !=null and introduce_self !=''">
+				introduce_self = #{introduce_self},
+			</if>
+			<if test="authority !=null and authority !=''">
+				authority = #{authority},
+			</if>
+		</set>
+		where post_box=#{post_box}
+		
+	</update>
+	<!-- 删除数据 -->
+	<delete id="delete" parameterType="cn.tianfu.EuqipManageSystem.entity.pojo.User" >
+			delete from user_t where post_box=#{post_box} 
+	</delete>
+	
+</mapper>

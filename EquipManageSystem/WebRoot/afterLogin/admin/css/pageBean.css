@@ -1,0 +1,54 @@
+@CHARSET "UTF-8";
+
+/*分页*/
+.pagination {
+	padding: 5px;
+	width: 600px;
+	margin: 5px;
+	text-align: right;
+}
+
+.pagination ul {
+	margin: 5;
+	padding: 5;
+	font-size: 12px;
+}
+
+.pagination li {
+	list-style-type: none;
+	display: inline;
+	padding: 1px;
+	margin: 1px;
+}
+
+.pagination a,.pagination a:visited {
+	padding: 5px;
+	border: 1px solid #9aafe5;
+	text-decoration: none;
+	color: #2e6ab1;
+}
+
+.pagination a:hover,.pagination a:active {
+	border: 1px solid #2b66a5;
+	color: #000;
+	background-color: lightyellow;
+}
+
+.pagination li.currentpage {
+	font-weight: bold;
+	padding: 5px;
+	border: 1px solid navy;
+	background-color: #2e6ab1;
+	color: #FFF;
+}
+
+.pagination li.disablepage {
+	padding: 5px;
+	border: 1px solid #929292;
+	color: #929292;
+}
+
+.pagination li.nextpage {
+	font-weight: bold;
+	padding: 5px;
+}

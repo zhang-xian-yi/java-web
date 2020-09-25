@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+
+<title>设备管理注册页面</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- 导入css  使用绝对路径 保证servlet 转发回来的请求 资源路径正确 -->
+<script type="text/javascript" src="/EquipManageSystem/js/jquery.min.js"></script>
+<script type="text/javascript" src="/EquipManageSystem/js/utils.js"></script>
+<link rel="stylesheet" href="/EquipManageSystem/css/main.css" type="text/css" />
+<script type="text/javascript">
+	function changeImage() 
+	{
+		document.getElementById("img").src = "/EquipManageSystem/func/getCaptcha?time="+ new Date().getTime();
+	}
+</script>
+
+<style type="text/css">
+	#image_submit_btn
+	{
+		background:url("/EquipManageSystem/images/signup.gif") no-repeat;
+	}
+</style>
+</head>
+<body class="main">
+	<!-- 导入头   -->
+	<div id="head_div">
+		<iframe src="/EquipManageSystem/htmlComponent/head.html " scrolling="no"
+		frameborder = "0"
+		width=100%
+		height="20%"></iframe>
+	</div>
+
+	<div id="divcontent">
+		<form action="/EquipManageSystem/userControl/register"
+			method="post"
+			id="register_form">
+			<table width="850px" border="0" cellspacing="0">
+				<tr>
+					<td style="padding:30px">
+						<h1>新会员注册</h1>
+						
+						<table width="70%" border="0" cellspacing="2" class="upline">
+							<tr>
+								<td style="text-align:right; width:20%">会员邮箱：</td>
+								<td style="width:40%">
+								<input type="text" class="textinput" name="post_box" placeholder="请输入有效的邮箱地址"/></td>
+								<td><font color="red" id="errorPost_box"></font></td>
+							</tr>
+							<tr>
+								<td style="text-align:right">会员名：</td>
+								<td>
+									<input type="text" class="textinput" name="user_name" placeholder="用户名设置至少8位"/>
+								</td>
+								<td><font color="red" id="errorName"></font></td>
+							</tr>
+							<tr>
+								<td style="text-align:right">密码：</td>
+								<td><input type="password" class="textinput" name="password" placeholder="至少8位的字母数字组合"/></td>
+								<td><font color="red" id="errorPassword"></font></td>
+							</tr>
+							<tr>
+								<td style="text-align:right">重复密码：</td>
+								<td><input type="password" class="textinput"
+									name="repassword"  onblur="checkInfoPwd()"/></td>
+								<td><span id="repwdmsg1"></span> </td>
+							</tr>
+							<tr>
+								<td style="text-align:right">性别：</td>
+								<td colspan="2">&nbsp;&nbsp;<input type="radio"
+									name="sex" value="man" checked="checked" /> 男
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<input type="radio" name="sex" value="woman" /> 女</td>
+							</tr>
+							<tr>
+								<td style="text-align:right">联系电话：</td>
+								<td colspan="2">
+									<input id="telephoneId" name="telephone" type="text" class="textinput" onblur="checTelePhone()" style="width:350px" placeholder="联系电话必须为11位的数字组合"/>
+								</td>
+								<td >
+									<span colspan="0" id="errorTelephone" color="red"></span>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</td>
+								
+							</tr>
+							<tr>
+								<td style="text-align:right">个人介绍：</td>
+								<td colspan="2"><textarea class="textarea" name="introduce_self"></textarea>
+								</td>
+							</tr>
+
+						</table>
+
+
+
+						<h1>注册校验</h1>
+						<table width="80%" border="0" cellspacing="2" class="upline">
+							<tr>
+								<td style="text-align:right; width:20%">输入校验码：</td>
+								<td style="width:50%"><input type="text" class="textinput" name="imageCode"/>
+								</td>
+								<td>&nbsp;<span color="red" id="errorCaptcha"></span></td>
+							</tr>
+							<tr>
+								<td style="text-align:right;width:20%;">&nbsp;</td>
+								<td colspan="2" style="width:50%">
+								<img src="/EquipManageSystem/func/getCaptcha" width="180"
+									 height="30" class="textinput" style="height:30px;" id="img" />&nbsp;&nbsp;
+									<a href="javascript:void(0);" onclick="changeImage()">看不清换一张</a>
+								</td>
+							</tr>
+						</table>
+
+
+
+						<table width="70%" border="0" cellspacing="0">
+							<tr>
+								<td colspan='0' style="padding-top:20px; text-align:center">
+									<input id="image_submit_btn" value="注册" type="button" src="images/signup.gif" onclick="register_ajax()" border="0">
+								</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<!-- 导入 版权信息 -->
+	<div id="foot_div">
+		<iframe src="/EquipManageSystem/htmlComponent/foot.html "
+		scrolling="no"
+		frameborder = "0"
+		width=100%
+		height="20%"></iframe>
+	</div>
+	
+</body>
+<script type="text/javascript">
+	
+function register_ajax()
+{
+	//alert("注册响应 respnose");
+	//如果js 脚本检验 没有通过 没必要 送入后台检验
+	if(! checkInfoPwd() || ! checTelePhone())
+	{
+		return false;
+	}
+	
+	send_ajax("register_form", function(data) {
+		//alert('success');
+		console.log("succ");
+		var jsondataStr = JSON.stringify(data);
+		//获取返回的json 对象
+		var MapData = $.parseJSON(jsondataStr);
+		//alert("sucee");
+		console.log(MapData);
+		//11 mean return code register succ 
+		if(MapData.code == 11)
+		{
+			window.location.href = "/EquipManageSystem/htmlComponent/registerSuccess.html";
+		}
+		else if(MapData.code == -11)
+		{
+			//-11 mean return code register failed 
+			window.location.href = "/EquipManageSystem/htmlComponent/registerFailed.html";
+		}
+		else if(MapData.path != null)
+		{
+			//其他情况跳转 具体页面
+	        window.location.href = "./"+ MapData.path;
+		}
+		
+		
+	}, function(data) {
+		//alert('error');
+		//console.log(data);
+		var jsondataStr = JSON.stringify(data);
+		var MapData = $.parseJSON(jsondataStr);
+		//获取返回的json 对象
+		console.log(MapData);
+		showErrorText(MapData.errorPost_box, "errorPost_box");
+		showErrorText(MapData.errorName, "errorName");
+		showErrorText(MapData.errorPassword, "errorPassword");
+		showErrorText(MapData.errorCaptcha, "errorCaptcha");
+		
+	});
+
+	//刷新验证码
+	changeImage();
+}
+
+function checkInfoPwd()
+{
+	var pwd = document.getElementsByName("password")[0];
+	var repwd = document.getElementsByName("repassword")[0];
+	
+	var msg = document.getElementById("repwdmsg1");
+	if(pwd.value == "")
+	{
+		msg.innerHTML = "<font color='red'>密码输入不可以为空</font>";
+		return false;
+	}
+	
+	
+	if(pwd.value == repwd.value)
+	{
+		msg.innerHTML = "<font color='green'>合法的密码输入</font>";
+		return true;
+	}
+	else
+	{
+		msg.innerHTML = "<font color='red'>两次输入的密码必须一致</font>";
+		return false;
+	}
+}
+
+function checTelePhone()
+{
+	//校验电话号码 必须 式 11位的全数字
+	var telephone = document.getElementById("telephoneId").value;
+	var errorTelephone = document.getElementById("errorTelephone");
+	//console.log(telephone);
+	var telReg = /^[1-9][0-9]{10}$/ ;
+   	if("" == telephone)
+   	{
+   		errorTelephone.innerHTML = "<font color='red'>电话号码不能为空</font>";
+   		return false;
+   	}
+   	else if(! telReg.test(telephone) )
+   	{
+   		//alert('bbbbb');
+   		errorTelephone.innerHTML = "<font color='red'>电话号码必须为11位的数字串</font>";
+   		return false;
+   	}
+   	//清空数据
+   	errorTelephone.innerHTML = "     ";
+   	return true;
+}
+
+
+</script>
+
+</html>

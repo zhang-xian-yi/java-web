@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Stict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-
+strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang = "zh-CN">
+<head>
+<meta http-equiv="content-language" content="zh-cn">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link href="/EquipManageSystem/afterlogin/css/style.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+</head>
+
+<body>
+	<form 	id="useraction_save_do" name="Form1"
+	 		action="../equipControl/addEquipment" 
+			enctype="multipart/form-data"
+			method="post">
+		&nbsp;
+		<table cellspacing="1" cellpadding="5" width="100%" align="center"
+			bgcolor="#eeeeee" style="border: 1px solid #8ba7e3" border="0">
+			<tr>
+				<td class="ta_01" align="center" bgcolor="#afd1f3" colspan="4"
+					height="26"><strong><strong>添加设备</strong> </strong>
+				</td>
+			</tr>
+
+
+			<tr>
+				<td align="center" bgcolor="#f5fafe" class="ta_01">设备名称：</td>
+				<td class="ta_01" bgcolor="#ffffff">
+					<input type="text" name="equip_name" class="bg"/>
+				</td>
+				<td align="center" bgcolor="#f5fafe" class="ta_01">设备状态：</td>
+				<td class="ta_01" bgcolor="#ffffff">
+					<select name="state" id="state">
+							<option value="" selected="selected">--选择设备状态--</option>
+							<option value="working">wroking</option>
+							<option value="ended">end</option>
+							<option value="broken">broken</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td align="center" bgcolor="#f5fafe" class="ta_01">设备数量：</td>
+				<td class="ta_01" bgcolor="#ffffff"><input type="text"
+					name="equipment_num" 
+					class="bg" />
+				</td>
+				<td align="center" bgcolor="#f5fafe" class="ta_01">设备类别：</td>
+				<td class="ta_01" bgcolor="#ffffff">
+					<select name="category" >
+							<option value="" selected="selected">--选择设备类别--</option>
+							<option value="嵌入式设备">嵌入式设备</option>
+							<option value="计算机外设">计算机外设</option>
+							<option value="移动设备">移动设备</option>
+							<option value="服务设备">服务设备</option>
+							<option value="其他">其他</option>
+					</select>
+				</td>
+			</tr>
+
+
+			<tr>
+				<td align="center" bgcolor="#f5fafe" class="ta_01">设备图片：</td>
+				<td class="ta_01" bgcolor="#ffffff" colspan="3">
+				<input
+					type="file" name="upload" size="30" value=""/>
+				</td>
+			</tr>
+			<tr>
+				<td class="ta_01" align="center" bgcolor="#f5fafe">设备描述：</td>
+				<td class="ta_01" bgcolor="#ffffff" colspan="3">
+				<textarea name="description" cols="30" rows="3"  style="width: 96%"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td align="center" colspan="4" class="sep1">
+					<img src="./images/shim.gif">
+				</td>
+			</tr>
+			<tr>
+				<td class="ta_01" style="width: 100%" align="center"
+					bgcolor="#f5fafe" colspan="4">
+					
+					
+						
+					<input type="button" class="button_ok" id="submit_ajax" value="确定">	
+						
+					<font face="宋体">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
+					
+					
+					
+					<input type="reset" value="重置" class="button_cancel">
+
+					<font face="宋体">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font> <input
+					class="button_ok" type="button" onclick="history.go(-1)" value="返回" />
+					<span id="label1">
+					
+					</span>
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+
+<script type="text/javascript">
+   $("#submit_ajax").click(function(){
+   var targetUrl = $("#useraction_save_do").attr("action");    
+   var data = new FormData($( "#useraction_save_do" )[0]);     
+    $.ajax({ 
+     type:'POST',  
+     url:targetUrl, 
+     cache: false,    //上传文件不需缓存
+     processData: false, //需设置为false。因为data值是FormData对象，不需要对数据做处理
+     contentType: false, //需设置为false。因为是FormData对象，且已经声明了属性enctype="multipart/form-data"
+     data:data,  
+     dataType:'json', 
+     success:function(data){
+       handleSuccData(data);
+     },
+     error:function(data){ 
+	   handleErrorData(data);
+     }
+    })
+     
+ });
+ 
+ 
+ 
+ function handleSuccData(data) 
+{
+	//alert('success');
+	var jsondataStr = JSON.stringify(data);
+	var MapData = $.parseJSON(jsondataStr);
+	console.log(MapData);
+	//获取返回的json 对象
+	
+	//10 means return code login succ
+	if(MapData.code == 12)
+	{
+		
+		window.location.href = "./responseHTML/addSucc.html";
+	}
+	else if(MapData.code == -12)
+	{
+		window.location.href = "./responseHTML/addFailed.html";
+	}
+	else if(MapData.path != null)
+	{
+		//其他情况跳转 具体页面
+        window.location.href = "./"+MapData.path;
+	}
+}
+
+function handleErrorData(data)
+{
+	
+} 
+
+</script>
+</html>

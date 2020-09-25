@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>add failed</title>
+</head>
+<body>
+	<p>添加设备失败</p>
+	<span id="seconds">5</span>秒后自动为您转跳回首页</a>
+</body>
+<script type="text/javascript">
+    var time = 5;
+	var timer = setInterval
+	(
+	  function()
+	  {
+	    var current_secend = document.getElementById("seconds");
+		if(time >=1)
+		{
+		   time--;
+		   current_secend.innerHTML = time;
+		   
+		   if(time <= 3)
+		   {
+		     current_secend.style.color = "red";	 
+		   }
+		}
+		else
+		{
+		   clearInterval(timer);
+		   location.href = "../index.html" ;
+		}
+	  },
+	  1000
+	);
+	
+</script>
+
+</html>
